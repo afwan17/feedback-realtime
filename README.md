@@ -12,5 +12,6 @@ how to run project:
 1. clone repo
 2. npm i
 
-or can access instantly: 
+or can access instantly: https://feedback-realtime.vercel.app/
+
 
