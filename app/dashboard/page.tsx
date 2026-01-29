@@ -40,7 +40,7 @@ export default function DashboardPage() {
         };
 
         init();
-    }, []);
+    }, [router]);
 
     const fetchFeedback = async () => {
         const { data } = await supabase

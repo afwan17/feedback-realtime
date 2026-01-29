@@ -1,0 +1,352 @@
+{
+  "name": "feedback-insert",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "b802d0e5-d81e-44af-95d8-990d59cff146",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "18b039b2-d701-4e05-8ad7-bec63ac085bf",
+      "name": "Webhook",
+      "webhookId": "b802d0e5-d81e-44af-95d8-990d59cff146"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "0e678b4a-18c5-4c8f-b50d-2554e7c5046d",
+              "name": "=id",
+              "value": "={{$json.body.record.id}}",
+              "type": "string"
+            },
+            {
+              "id": "da681667-5eb4-4def-bd6e-eb02295d870c",
+              "name": "=description",
+              "value": "={{$json.body.record.description}}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        208,
+        0
+      ],
+      "id": "ab204ff7-ffe0-4f57-9604-092c7694b1d5",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "8d2c738e-5b64-451f-ba75-9fc5d1157c27",
+              "leftValue": "={{$json.description.toLowerCase()}}\n",
+              "rightValue": "urgent",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            },
+            {
+              "id": "e007de63-b3db-4680-bebb-cd39e7ebf7da",
+              "leftValue": "={{$json.description.toLowerCase()}}\n",
+              "rightValue": "error",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            },
+            {
+              "id": "4df9aa88-818b-4534-ae84-8764d643b7c5",
+              "leftValue": "={{$json.description.toLowerCase()}}\n",
+              "rightValue": "broken",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        416,
+        0
+      ],
+      "id": "7b8ede0d-b626-4bc4-bab6-402fd03762fe",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "9849affe-d3d4-45ae-bb2d-9cecb8ee95ee",
+              "name": "=id",
+              "value": "={{$json.id}}",
+              "type": "string"
+            },
+            {
+              "id": "934919d0-9234-431b-84a9-4e3c267ebf48",
+              "name": "priority",
+              "value": "High",
+              "type": "string"
+            },
+            {
+              "id": "e984eed5-cfb1-45db-a4b0-c9c57f9dabfc",
+              "name": "category",
+              "value": "Bug",
+              "type": "string"
+            },
+            {
+              "id": "b9bf124f-7671-4521-833b-e4abd7ea4aa6",
+              "name": "status",
+              "value": "Processed",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        624,
+        -96
+      ],
+      "id": "5286b26e-dbab-4ed2-9013-41c22bef385e",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c1354e31-227b-4a1d-9dcf-d213c38682be",
+              "name": "=id",
+              "value": "={{$json.id}}",
+              "type": "string"
+            },
+            {
+              "id": "f8ab9311-24cb-4db7-8a16-8386d98bf169",
+              "name": "priority",
+              "value": "Low",
+              "type": "string"
+            },
+            {
+              "id": "e1503293-3c4e-4c3d-b74c-9a6ec3f52d4b",
+              "name": "category",
+              "value": "General",
+              "type": "string"
+            },
+            {
+              "id": "3466614f-c263-4249-8681-217a9e212262",
+              "name": "status",
+              "value": "Pending",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        624,
+        96
+      ],
+      "id": "b87ebc99-86e1-44ac-81a6-9ab5bfd6c499",
+      "name": "Edit Fields2"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "feedback",
+        "matchType": "allFilters",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "=id",
+              "condition": "eq",
+              "keyValue": "={{$json.id}}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "=priority",
+              "fieldValue": "={{$json.priority}}"
+            },
+            {
+              "fieldId": "=category",
+              "fieldValue": "={{$json.category}}"
+            },
+            {
+              "fieldId": "=status",
+              "fieldValue": "={{$json.status}}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        832,
+        -96
+      ],
+      "id": "82d5e892-ab96-4cce-9191-32d34e3934ff",
+      "name": "Update a row2",
+      "credentials": {
+        "supabaseApi": {
+          "id": "aQSFlus8Sy4snqZr",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "feedback",
+        "matchType": "allFilters",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "=id",
+              "condition": "eq",
+              "keyValue": "={{$json.id}}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "=priority",
+              "fieldValue": "={{$json.priority}}"
+            },
+            {
+              "fieldId": "=category",
+              "fieldValue": "={{$json.category}}"
+            },
+            {
+              "fieldId": "=status",
+              "fieldValue": "={{$json.status}}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        832,
+        96
+      ],
+      "id": "0fb24733-af95-45d1-9d25-4e4d06b644f4",
+      "name": "Update a row3",
+      "credentials": {
+        "supabaseApi": {
+          "id": "aQSFlus8Sy4snqZr",
+          "name": "Supabase account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Update a row2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields2": {
+      "main": [
+        [
+          {
+            "node": "Update a row3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "versionId": "b83c626f-a8ee-46e1-88a4-66dac88e2cdc",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "c7cdc11ec2dfa359ba39121488803027fa6194214428c381ca4bccea31af355f"
+  },
+  "id": "0EdIYdxQ9uLJnBU2JQPYb",
+  "tags": []
+}
